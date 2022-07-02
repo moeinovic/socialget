@@ -9,7 +9,7 @@ from requests import Session
 from twittic import TwitterAPI
 from twittic.exceptions import (Forbidden, NotFound, ContentError)
 from wget import download
-from .config import lele as msg
+from nigga import lele
 
 API_TOKEN = '5227234241:AAGyRM4oqaWjyPLzLmm3s7tq0NrZtvKpGPY'
 PROXY_URL = 'socks5://127.0.0.1:7890'
@@ -116,16 +116,16 @@ async def download_tweet(message: types.Message):
 
                 await Cli.send_media_group(message.chat.id, media_group, reply_to_message_id=message.message_id)
         else:
-            await message.reply(msg["notmediafound"])
+            await message.reply(lele["notmediafound"])
     except ContentError:
         await message.reply("bro nigga")
-        print(msg)
+        print(lele)
     except NotFound:
-        await message.reply(msg["notfound"])
+        await message.reply(text=lele["notfound"])
     except Forbidden:
-        await message.reply(msg["forbidden"])
+        await message.reply(text=lele["forbidden"])
     except Exception as e:
-        await message.reply(msg["unknown"])
+        await message.reply(text=lele["unknown"])
     finally:
         return
 
@@ -174,15 +174,15 @@ async def handler(data: types.CallbackQuery):
                                 break
                         
                 else:
-                    await bro.edit_text(msg["notmediafound"])
+                    await bro.edit_text(lele["notmediafound"])
             else:
-                await data.answer(msg["permission"], show_alert=True)
+                await data.answer(lele["permission"], show_alert=True)
     except NotFound:
-        await data.answer(text=msg["fetch"])
+        await data.answer(text=lele["fetch"])
     except Forbidden:
-        await data.answer(text=msg["forbidden"])
+        await data.answer(text=lele["forbidden"])
     except Exception as e:
-        await data.answer(text=msg["unknown"])
+        await data.answer(text=lele["unknown"])
     finally:
         return       
 executor.start_polling(dp, skip_updates=True)
