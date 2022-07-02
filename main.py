@@ -22,7 +22,7 @@ proxy = {
     'http': 'http://127.0.0.1:7890',
     'https': 'http://127.0.0.1:7890'
 }
-Cli = Bot(token=API_TOKEN, proxy=PROXY_URL, parse_mode=types.ParseMode.HTML)
+Cli = Bot(token=API_TOKEN, parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(Cli)
 
 """@dp.message_handler(regexp=INSTAGRAM_POST_PATTERN)
@@ -68,7 +68,7 @@ async def download_tweet(message: types.Message):
     try:
         tweet_url = message.text
         status_id = search(TWITTER_TWEET_PATTERN_WITH_ONE_ESCAPE, tweet_url).group(3)
-        tweet = TwitterAPI(proxies=proxy)
+        tweet = TwitterAPI()
         tweet_info = tweet.get_status(status_id)
         tweet_text = tweet_info['full_text']
         favorite_count = tweet_info['favorite_count']
@@ -98,7 +98,7 @@ async def download_tweet(message: types.Message):
                     for media in tweet_info['medias'][0]["urls"]:
                         resolution = media['resolution']
                         callback = f"dl_{status_id}_{resolution}"
-                        size = tweet.convert_size(int(Session().head(media['url'], proxies=proxy).headers["Content-Length"]))
+                        size = tweet.convert_size(int(Session().head(media['url']).headers["Content-Length"]))
                         inline_text = f"{resolution} - {size}"
                         qualityies.add(types.InlineKeyboardButton(text=inline_text, callback_data=callback))
                     qualityies.add(types.InlineKeyboardButton(text="SocialGetBot", callback_data=message.from_user.id))
@@ -137,7 +137,7 @@ async def handler(data: types.CallbackQuery):
                 cli_id = message.reply_markup.inline_keyboard[-1].callback_data
             if cli_id == user_id:
                 bro = await message.edit_text(f"Downloading {res}\n please don't delete the link message")
-                api = TwitterAPI(proxies=proxy)
+                api = TwitterAPI()
                 tweet_info = api.get_status(sid)
                 if tweet_info["has_media"] and tweet_info["media_count"] == 1:
                     media_type = tweet_info["medias"][0]["type"]
