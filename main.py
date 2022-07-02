@@ -94,7 +94,7 @@ async def download_tweet(message: types.Message):
                     image_url = tweet_info['medias'][0]['url']
                     await Cli.send_photo(message.chat.id, image_url, caption=caption, reply_to_message_id=message.message_id)
                 elif media_type == "video" or media_type == "animated_gif":
-                    video_url = tweet_info['medias'][0]['url']
+                    video_url = tweet_info['medias'][0]['urls'][0]["url"]
                     if Session().head(video_url).status_code == 403:
                         raise ContentError
                     qualityies = types.InlineKeyboardMarkup()
