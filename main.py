@@ -1,5 +1,5 @@
 import logging
-from pprint import pp, pprint
+from pprint import pprint
 from re import search
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.utils.exceptions import BadRequest
@@ -9,7 +9,7 @@ from requests import Session
 from twittic import TwitterAPI
 from twittic.exceptions import (Forbidden, NotFound, ContentError)
 from wget import download
-from config import lele as msg
+from .config import lele as msg
 
 API_TOKEN = '5227234241:AAGyRM4oqaWjyPLzLmm3s7tq0NrZtvKpGPY'
 PROXY_URL = 'socks5://127.0.0.1:7890'
