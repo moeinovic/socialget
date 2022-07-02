@@ -96,7 +96,8 @@ async def download_tweet(message: types.Message):
                 elif media_type == "video" or media_type == "animated_gif":
                     video_url = tweet_info['medias'][0]['urls'][0]["url"]
                     with Session().head(video_url) as s:
-                        print(s.status_code)
+                        if s.status_code == 403:
+                            raise ContentError("Bro")
                     qualityies = types.InlineKeyboardMarkup()
                     for media in tweet_info['medias'][0]["urls"]:
                         resolution = media['resolution']
