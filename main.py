@@ -1,5 +1,5 @@
 import logging
-from pprint import pprint
+from pprint import pp, pprint
 from re import search
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.utils.exceptions import BadRequest
@@ -7,9 +7,9 @@ from time import time
 from numerize import numerize as num
 from requests import Session
 from twittic import TwitterAPI
-from twittic.exceptions import (Forbidden, NotFound, ContentError)
+from twittic.exceptions import (Forbidden, NotFound)
 from wget import download
-from nigga import lele
+
 
 API_TOKEN = '5227234241:AAGyRM4oqaWjyPLzLmm3s7tq0NrZtvKpGPY'
 PROXY_URL = 'socks5://127.0.0.1:7890'
@@ -94,7 +94,6 @@ async def download_tweet(message: types.Message):
                     image_url = tweet_info['medias'][0]['url']
                     await Cli.send_photo(message.chat.id, image_url, caption=caption, reply_to_message_id=message.message_id)
                 elif media_type == "video" or media_type == "animated_gif":
-                    video_url = tweet_info['medias'][0]['urls'][0]["url"]
                     qualityies = types.InlineKeyboardMarkup()
                     for media in tweet_info['medias'][0]["urls"]:
                         resolution = media['resolution']
@@ -116,16 +115,14 @@ async def download_tweet(message: types.Message):
 
                 await Cli.send_media_group(message.chat.id, media_group, reply_to_message_id=message.message_id)
         else:
-            await message.reply(lele["notmediafound"])
-    except ContentError:
-        await message.reply("bro nigga")
-        print(lele)
+            await message.reply("No media found")
     except NotFound:
-        await message.reply(text=lele["notfound"])
+        await message.reply("Tweet not found")
     except Forbidden:
-        await message.reply(text=lele["forbidden"])
+        await message.reply("Forbidden")
     except Exception as e:
-        await message.reply(text=lele["unknown"])
+        logging.error(e)
+        await message.reply("""Something went wrong""")
     finally:
         return
 
@@ -174,15 +171,15 @@ async def handler(data: types.CallbackQuery):
                                 break
                         
                 else:
-                    await bro.edit_text(lele["notmediafound"])
+                    await bro.edit_text("Media not found")
             else:
-                await data.answer(lele["permission"], show_alert=True)
+                await data.answer("You are not allowed to download this media", show_alert=True)
     except NotFound:
-        await data.answer(text=lele["fetch"])
+        await data.answer(text="Cant Fetch Video")
     except Forbidden:
-        await data.answer(text=lele["forbidden"])
+        await data.answer(text="Video is Private or unavailable")
     except Exception as e:
-        await data.answer(text=lele["unknown"])
+        await data.answer(text="Something went wrong")
     finally:
         return       
 executor.start_polling(dp, skip_updates=True)
