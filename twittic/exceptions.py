@@ -31,10 +31,8 @@ class HTTPException(TwitterException):
         self.api_codes = []
         self.api_messages = []
 
-        try:
-            status_code = response.status_code
-        except AttributeError:
-            status_code = response.status
+        
+        status_code = response.status_code
 
         if response_json is None:
             try:
@@ -120,7 +118,7 @@ class TwitterServerError(HTTPException):
     """
     pass
 
-class ContentError(HTTPException):
+class ContentError(Exception):
     """TwitterServerError()
     Exception raised for a 5xx HTTP status code
     """
