@@ -95,9 +95,6 @@ async def download_tweet(message: types.Message):
                     await Cli.send_photo(message.chat.id, image_url, caption=caption, reply_to_message_id=message.message_id)
                 elif media_type == "video" or media_type == "animated_gif":
                     video_url = tweet_info['medias'][0]['urls'][0]["url"]
-                    with Session().head(video_url) as s:
-                        if s.status_code == 403:
-                            raise ContentError("Bro")
                     qualityies = types.InlineKeyboardMarkup()
                     for media in tweet_info['medias'][0]["urls"]:
                         resolution = media['resolution']
@@ -128,7 +125,6 @@ async def download_tweet(message: types.Message):
     except Forbidden:
         await message.reply(msg["forbidden"])
     except Exception as e:
-        raise e
         await message.reply(msg["unknown"])
     finally:
         return
