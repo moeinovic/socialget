@@ -1,4 +1,5 @@
 import logging
+import traceback
 from pprint import pp, pprint
 from re import search
 from aiogram import Bot, Dispatcher, executor, types
@@ -129,7 +130,7 @@ async def download_tweet(message: types.Message):
         await message.reply("Forbidden")
     except Exception as e:
         logging.error(e)
-        await message.reply(e)
+        await message.reply(traceback.format_exc())
     finally:
         return
 
