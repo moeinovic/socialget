@@ -119,3 +119,9 @@ class TwitterServerError(HTTPException):
     Exception raised for a 5xx HTTP status code
     """
     pass
+
+class ContentError(HTTPException):
+    """TwitterServerError()
+    Exception raised for a 5xx HTTP status code
+    """
+    pass

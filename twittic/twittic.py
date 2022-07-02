@@ -73,7 +73,6 @@ class TwitterAPI:
     
     def get_token(self):
         url = self.base_url + "guest/activate.json"
-        print("Getting Public Token...")
         try:
             response = self.request(url, method="POST", headers=self.headers).json()
         except Exception as e:

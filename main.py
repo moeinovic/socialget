@@ -7,9 +7,9 @@ from time import time
 from numerize import numerize as num
 from requests import Session
 from twittic import TwitterAPI
-from twittic.exceptions import (Forbidden, NotFound)
+from twittic.exceptions import (Forbidden, NotFound, ContentError)
 from wget import download
-
+from config import messages as msg
 
 API_TOKEN = '5227234241:AAGyRM4oqaWjyPLzLmm3s7tq0NrZtvKpGPY'
 PROXY_URL = 'socks5://127.0.0.1:7890'
@@ -94,6 +94,9 @@ async def download_tweet(message: types.Message):
                     image_url = tweet_info['medias'][0]['url']
                     await Cli.send_photo(message.chat.id, image_url, caption=caption, reply_to_message_id=message.message_id)
                 elif media_type == "video" or media_type == "animated_gif":
+                    video_url = tweet_info['medias'][0]['url']
+                    if Session().head(video_url).status_code == 403:
+                        raise ContentError
                     qualityies = types.InlineKeyboardMarkup()
                     for media in tweet_info['medias'][0]["urls"]:
                         resolution = media['resolution']
@@ -115,14 +118,16 @@ async def download_tweet(message: types.Message):
 
                 await Cli.send_media_group(message.chat.id, media_group, reply_to_message_id=message.message_id)
         else:
-            await message.reply("No media found")
+            await message.reply(msg["notmediafound"])
+    except ContentError:
+        await message.reply(msg["videoerror"])
     except NotFound:
-        await message.reply("Tweet not found")
+        await message.reply(msg["notfound"])
     except Forbidden:
-        await message.reply("Forbidden")
+        await message.reply(msg["forbidden"])
     except Exception as e:
         logging.error(e)
-        await message.reply("""Something went wrong""")
+        await message.reply(msg["unknown"])
     finally:
         return
 
@@ -171,15 +176,15 @@ async def handler(data: types.CallbackQuery):
                                 break
                         
                 else:
-                    await bro.edit_text("Media not found")
+                    await bro.edit_text(msg["notmediafound"])
             else:
-                await data.answer("You are not allowed to download this media", show_alert=True)
+                await data.answer(msg["permission"], show_alert=True)
     except NotFound:
-        await data.answer(text="Cant Fetch Video")
+        await data.answer(text=msg["fetch"])
     except Forbidden:
-        await data.answer(text="Video is Private or unavailable")
+        await data.answer(text=msg["forbidden"])
     except Exception as e:
-        await data.answer(text="Something went wrong")
+        await data.answer(text=msg["unknown"])
     finally:
         return       
 executor.start_polling(dp, skip_updates=True)
