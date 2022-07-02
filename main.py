@@ -95,7 +95,9 @@ async def download_tweet(message: types.Message):
                     await Cli.send_photo(message.chat.id, image_url, caption=caption, reply_to_message_id=message.message_id)
                 elif media_type == "video" or media_type == "animated_gif":
                     video_url = tweet_info['medias'][0]['urls'][0]["url"]
-                    print(Session().head(video_url).status_code, video_url)
+                    with Session() as s:
+                        with s.head(video_url) as r:
+                            print(r.status_code)
                     qualityies = types.InlineKeyboardMarkup()
                     for media in tweet_info['medias'][0]["urls"]:
                         resolution = media['resolution']
