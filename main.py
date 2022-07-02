@@ -128,7 +128,7 @@ async def download_tweet(message: types.Message):
     except Forbidden:
         await message.reply(msg["forbidden"])
     except Exception as e:
-        logging.error(e)
+        raise e
         await message.reply(msg["unknown"])
     finally:
         return
