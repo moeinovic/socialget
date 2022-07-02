@@ -167,7 +167,7 @@ async def handler(data: types.CallbackQuery):
                                 except BadRequest:
                                     mention = f"<a href='tg://user?id={message.from_user.id}'>@{data.from_user.full_name}</a>"
                                     caption = f"{caption} \n {mention}"
-                                    await Cli.send_video(message.chat.id, url["url"], thumb=tweet_info["medias"][0]["thumbnail_url"], caption=caption, parse_mode="Markdown")
+                                    await Cli.send_video(message.chat.id, url["url"], thumb=tweet_info["medias"][0]["thumbnail_url"], caption=caption)
                                 break
                         
                 else:
