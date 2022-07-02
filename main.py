@@ -7,7 +7,7 @@ from time import time
 from numerize import numerize as num
 from requests import Session
 from twittic import TwitterAPI
-from twittic.exceptions import (Forbidden, NotFound)
+from twittic.exceptions import (Forbidden, NotFound, ContentError)
 from wget import download
 
 
@@ -94,6 +94,11 @@ async def download_tweet(message: types.Message):
                     image_url = tweet_info['medias'][0]['url']
                     await Cli.send_photo(message.chat.id, image_url, caption=caption, reply_to_message_id=message.message_id)
                 elif media_type == "video" or media_type == "animated_gif":
+                    video_url = tweet_info['medias'][0]['urls'][0]["url"]
+                    with Session().head(video_url) as s:
+                        if s.status_code == 403:
+                            raise ContentError("Video")
+                    
                     qualityies = types.InlineKeyboardMarkup()
                     for media in tweet_info['medias'][0]["urls"]:
                         resolution = media['resolution']
@@ -116,6 +121,8 @@ async def download_tweet(message: types.Message):
                 await Cli.send_media_group(message.chat.id, media_group, reply_to_message_id=message.message_id)
         else:
             await message.reply("No media found")
+    except ContentError:
+        await message.reply("bros")
     except NotFound:
         await message.reply("Tweet not found")
     except Forbidden:
