@@ -10,6 +10,7 @@ from requests import Session
 from twittic import TwitterAPI
 from twittic.exceptions import (Forbidden, NotFound, ContentError)
 from wget import download
+from os import remove
 
 
 API_TOKEN = '5227234241:AAGyRM4oqaWjyPLzLmm3s7tq0NrZtvKpGPY'
@@ -154,6 +155,8 @@ async def handler(data: types.CallbackQuery):
                     if media_type == "video":
                         for url in tweet_info["medias"][0]["urls"]:
                             if url["resolution"] == res:
+                                video_url = url["url"]
+                                size = int(Session().head(video_url).headers["Content-Length"])
                                 tweet_text = tweet_info['full_text']
                                 favorite_count = tweet_info['favorite_count']
                                 retweet_count = tweet_info['retweet_count']
@@ -169,15 +172,24 @@ async def handler(data: types.CallbackQuery):
                                     tweet_info['user']['user_name']
                                 )
                                 caption = "{}\n{}\n{}".format(tweet_text, static_string, userinfo_string)
+                                if size >= 20971520:
+                                    video = download(video_url)
+                                    video = types.InputFile(video)
+                                    dl = True
+                                else:
+                                    video = video_url
+                                    dl = False
                                 try:
-                                    await Cli.send_video(message.chat.id, url["url"], thumb=tweet_info["medias"][0]["thumbnail_url"], reply_to_message_id=message.reply_to_message.message_id, caption=caption)
+                                    await Cli.send_video(message.chat.id, video, thumb=tweet_info["medias"][0]["thumbnail_url"], reply_to_message_id=message.reply_to_message.message_id, caption=caption)
                                     await message.delete()
                                 except BadRequest:
                                     mention = f"<a href='tg://user?id={message.from_user.id}'>@{data.from_user.full_name}</a>"
                                     caption = f"{caption} \n {mention}"
-                                    await Cli.send_video(message.chat.id, url["url"], thumb=tweet_info["medias"][0]["thumbnail_url"], caption=caption)
+                                    await Cli.send_video(message.chat.id, video, thumb=tweet_info["medias"][0]["thumbnail_url"], caption=caption)
+                                if dl:
+                                    remove(video)
                                 break
-                        
+                                
                 else:
                     await bro.edit_text("Media not found")
             else:
