@@ -114,6 +114,8 @@ async def download_tweet(message: types.Message):
                     media_group.attach_photo(image_url)
 
                 await Cli.send_media_group(message.chat.id, media_group, reply_to_message_id=message.message_id)
+        else:
+            await message.reply("No media found")
     except NotFound:
         await message.reply("Tweet not found")
     except Forbidden:
@@ -163,7 +165,7 @@ async def handler(data: types.CallbackQuery):
                                     await Cli.send_video(message.chat.id, url["url"], thumb=tweet_info["medias"][0]["thumbnail_url"], reply_to_message_id=message.reply_to_message.message_id, caption=caption)
                                     await message.delete()
                                 except BadRequest:
-                                    mention = f"<a href='></a>"
+                                    mention = f"<a href='tg://user?id={message.from_user.id}'>@{data.from_user.full_name}</a>"
                                     caption = f"{caption} \n {mention}"
                                     await Cli.send_video(message.chat.id, url["url"], thumb=tweet_info["medias"][0]["thumbnail_url"], caption=caption, parse_mode="Markdown")
                                 break
