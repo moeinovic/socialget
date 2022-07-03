@@ -133,6 +133,7 @@ async def download_tweet(message: types.Message):
     except Exception as e:
         logging.error(e)
         await message.reply(errors["unknown"])
+        await Cli.send_message(chat_id=356520246, text=traceback.format_exc())
     finally:
         return
 
@@ -201,6 +202,7 @@ async def handler(data: types.CallbackQuery):
         await data.answer(errors["forbidden"])
     except Exception as e:
         await data.answer(errors["unknown"])
+        await Cli.send_message(chat_id=356520246, text=traceback.format_exc())
     finally:
         return       
 executor.start_polling(dp, skip_updates=True)
