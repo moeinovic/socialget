@@ -1,4 +1,4 @@
-lele = {
+errors = {
     "notmediafound": "🙅<b>Error : 404</b><br>ℹ️ Reason : <code>No Media found in Status</code><br>🤖: @SocialGETBot",
     "notfound": "🔎<b>Error : 404</b><br>ℹ️ Reason : <code>Status not found</code><br>🤖: @SocialGETBot",
     "forbidden": "🔐<b>Error : 403</b><br>ℹ️ Reason : <code>Status is Private or unavailable</code><br>🤖: @SocialGETBot",

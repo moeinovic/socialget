@@ -9,6 +9,7 @@ from numerize import numerize as num
 from requests import Session
 from twittic import TwitterAPI
 from twittic.exceptions import (Forbidden, NotFound, ContentError)
+from utils import errors
 from wget import download
 from os import remove
 
@@ -122,16 +123,16 @@ async def download_tweet(message: types.Message):
 
                 await Cli.send_media_group(message.chat.id, media_group, reply_to_message_id=message.message_id)
         else:
-            await message.reply("No media found")
+            await message.reply(errors["notmediafound"])
     except ContentError:
-        await message.reply("bros")
+        await message.reply(errors["videoerror"])
     except NotFound:
-        await message.reply("Tweet not found")
+        await message.reply(errors["notfound"])
     except Forbidden:
-        await message.reply("Forbidden")
+        await message.reply(errors["forbidden"])
     except Exception as e:
         logging.error(e)
-        await message.reply(traceback.format_exc())
+        await message.reply(errors["unknown"])
     finally:
         return
 
@@ -191,15 +192,15 @@ async def handler(data: types.CallbackQuery):
                                 break
                                 
                 else:
-                    await bro.edit_text("Media not found")
+                    await bro.edit_text(errors["notmediafound"])
             else:
-                await data.answer("You are not allowed to download this media", show_alert=True)
+                await data.answer(errors["permission"], show_alert=True)
     except NotFound:
-        await data.answer(text="Cant Fetch Video")
+        await data.answer(errors["fetch"])
     except Forbidden:
-        await data.answer(text="Video is Private or unavailable")
+        await data.answer(errors["forbidden"])
     except Exception as e:
-        await data.answer(text="Something went wrong")
+        await data.answer(errors["unknown"])
     finally:
         return       
 executor.start_polling(dp, skip_updates=True)
