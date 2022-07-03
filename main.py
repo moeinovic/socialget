@@ -123,11 +123,11 @@ async def download_tweet(message: types.Message):
 
                 await Cli.send_media_group(message.chat.id, media_group, reply_to_message_id=message.message_id)
         else:
-            await message.reply(errors["notmediafound"])
+            await message.reply("🙅<b>Error : 404</b>ℹ️ Reason : <code>No Media found in Status</code>🤖: @SocialGETBot")
     except ContentError:
         await message.reply(errors["videoerror"])
     except NotFound:
-        await message.reply(errors["notfound"])
+        await message.reply("🔎<b>Error : 404</b>ℹ️ Reason : <code>Status not found</code>🤖: @SocialGETBot")
     except Forbidden:
         await message.reply(errors["forbidden"])
     except Exception as e:
