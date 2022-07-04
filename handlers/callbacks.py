@@ -79,5 +79,5 @@ async def twitter_video_dl(data: types.CallbackQuery):
     finally:
         return       
 
-def register_callbacks(dp: Dispatcher):
+def twetter_register_callbacks(dp: Dispatcher):
     dp.register_callback_query_handler(twitter_video_dl, callback)
