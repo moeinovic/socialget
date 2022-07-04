@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from twittic import TwitterAPI
 from twittic.exceptions import NotFound, Forbidden
 from aiogram.utils.exceptions import BadRequest
-import numerize as num
+from numerize import numerize as num
 from requests import Session
 from wget import download
 from utils import errors
