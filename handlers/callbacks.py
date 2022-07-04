@@ -5,8 +5,9 @@ from aiogram.utils.exceptions import BadRequest
 from numerize import numerize as num
 from requests import Session
 from wget import download
-from utils import errors
+from utils.exceptions import errors
 from os import remove
+from utils.filters import callback
 import traceback
 
 async def twitter_video_dl(data: types.CallbackQuery):
@@ -79,4 +80,4 @@ async def twitter_video_dl(data: types.CallbackQuery):
         return       
 
 def register_callbacks(dp: Dispatcher):
-    dp.register_callback_query_handler(twitter_video_dl)
+    dp.register_callback_query_handler(twitter_video_dl, callback.filter(lambda x: x.data.startswith("dlt_")))

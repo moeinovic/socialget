@@ -9,7 +9,7 @@ from numerize import numerize as num
 from requests import Session
 from twittic import TwitterAPI
 from twittic.exceptions import (Forbidden, NotFound, ContentError)
-from utils import errors
+from utils.exceptions import errors
 from wget import download
 from os import remove
 from handlers.callbacks import register_callbacks
