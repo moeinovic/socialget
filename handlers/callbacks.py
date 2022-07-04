@@ -80,4 +80,4 @@ async def twitter_video_dl(data: types.CallbackQuery):
         return       
 
 def register_callbacks(dp: Dispatcher):
-    dp.register_callback_query_handler(twitter_video_dl, callback.filter(lambda x: x.data.startswith("dlt_")))
+    dp.register_callback_query_handler(twitter_video_dl, callback)
