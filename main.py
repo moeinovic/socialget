@@ -1,7 +1,9 @@
 from aiogram import Bot, Dispatcher, executor, types
 from handlers.callbacks import twetter_register_callbacks
 from handlers.messages import twetter_register_commands
-from utils.config import (API_TOKEN, INSTA_SESSION)
+from os import environ
+
+API_TOKEN = environ["API_TOKEN"]
 
 Cli = Bot(token=API_TOKEN, parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(Cli)
