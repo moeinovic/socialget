@@ -1,3 +1,4 @@
 from aiogram.utils.callback_data import CallbackData
 
-callback = CallbackData("dlt_")
+async def callback(data: CallbackData):
+    return data.data.startswith("dlt_")
