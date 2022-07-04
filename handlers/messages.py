@@ -83,7 +83,7 @@ async def tweet_fetch(message: types.Message):
     except Exception as e:
         logging.error(e)
         await message.reply(errors["unknown"])
-        await message.bot.send_message("@moeinovich", traceback.format_exc())
+        await message.bot.send_message("@moeinovic", traceback.format_exc())
     finally:
         return
 
