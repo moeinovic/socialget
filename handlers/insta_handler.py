@@ -36,7 +36,7 @@ async def download_post(message: types.Message):
                 duration = int(media_info["video_duration"])
                 size = int(Session().head(video_url).headers["Content-Length"])
                 if size <= 20971520:
-                    message.reply_video(video_url, caption=full_caption)
+                    await message.reply_video(video_url, caption=full_caption)
                 elif size > 20971520 and size <= 52428800:
                     status = "File size is too big please wait to download progress will be start"
                     status_message = await message.answer(status)
