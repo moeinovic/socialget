@@ -32,8 +32,6 @@ async def download_post(message: types.Message):
                 await message.reply_photo(image_url, caption=full_caption)
             elif media_type == 2:
                 video_url = str(media_info["video_url"])
-                thumbnail_url = str(media_info["thumbnail_url"])
-                duration = int(media_info["video_duration"])
                 size = int(Session().head(video_url).headers["Content-Length"])
                 if size <= 20971520:
                     await message.reply_video(video_url, caption=full_caption)
@@ -59,7 +57,7 @@ async def download_post(message: types.Message):
                 await message.reply_media_group(media_group)
                                 
     except Exception as e:
-        print(traceback.format_exc())
+        print(e)
 
 
 def insta_register(dp: Dispatcher):
