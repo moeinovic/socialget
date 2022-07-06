@@ -37,24 +37,30 @@ async def download_post(message: types.Message):
                     await message.reply_video(video_url, caption=full_caption)
                 elif size > 20971520 and size <= 52428800:
                     status = "File size is too big please wait to download progress will be start"
-                    status_message = await message.answer(status)
+                    status_message = await message.reply(status)
                     file = download(video_url)
                     await message.reply_video(file, caption=full_caption)
                     await status_message.delete()
                     remove(file)
                 elif size >= 52428800:
                     await message.reply("File Size is bigger than 50MB!")
-            elif media_type == 8:
-                resources = media_info["resources"]
-                media_group = types.MediaGroup()
-                for resource in resources:
-                    if resource["media_type"] == 1:
-                        image_url = str(resource["thumbnail_url"])
-                        media_group.attach_photo(image_url)
-                    elif resource["media_type"] == 2:
-                        video_url = resource["video_url"]
-                        media_group.attach_video(video_url)
-                await message.reply_media_group(media_group)
+        elif media_type == 8:
+            resources = media_info["resources"]
+            media_group = types.MediaGroup()
+            for i,resource in enumerate(resources):
+                if resource["media_type"] == 1:
+                    image_url = str(resource["thumbnail_url"])
+                    if i == 0:
+                        media_group.attach_photo(image_url, caption=full_caption)
+                        continue
+                    media_group.attach_photo(image_url)
+                elif resource["media_type"] == 2:
+                    video_url = resource["video_url"]
+                    if i == 0:
+                        media_group.attach_video(video_url, caption=full_caption)
+                        continue
+                    media_group.attach_video(video_url)
+            await message.reply_media_group(media_group)
                                 
     except Exception as e:
         print(e)
