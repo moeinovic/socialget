@@ -6,3 +6,4 @@ aiogram
 numerize
 aiohttp_socks
 wget
+pillow
