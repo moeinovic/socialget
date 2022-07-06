@@ -50,7 +50,7 @@ async def download_post(message: types.Message):
                 for resource in resources:
                     if resource["media_type"] == 1:
                         image_url = str(resource["thumbnail_url"])
-                        media_group.append(types.InputMediaPhoto(types.InputFile(download(image_url))))
+                        media_group.attach_photo(image_url)
                     elif resource["media_type"] == 2:
                         video_url = resource["video_url"]
                         media_group.attach_video(video_url)
