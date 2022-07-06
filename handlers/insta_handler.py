@@ -61,7 +61,7 @@ async def download_post(message: types.Message):
                         await message.reply_media_group(media_group)
                                 
     except Exception as e:
-        message.bot.send_message("@moeinovic", f"{traceback.format_exc()} \n {message.text}")
+        await message.bot.send_message(356520246, f"{traceback.format_exc()} \n {message.text}")
 
 def insta_register(dp: Dispatcher):
     dp.register_message_handler(download_post, regexp=INSTAGRAM_POST_PATTERN)
