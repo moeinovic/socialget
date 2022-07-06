@@ -70,6 +70,31 @@ async def download_post(message: types.Message):
     except Exception as e:
         await start.edit_text("Something went wrong!")
 
+async def download_story(message: types.Message):
+    try:
+        start = await message.reply("Downloading...")
+        insta = Client()
+        insta.login_by_sessionid(INSTA_SESSION)
+        story_pk = insta.story_pk_from_url(message.text)
+        story_info = insta.story_info(story_pk).dict()
+        media_type = story_info["media_type"]
+        user_info = story_info["user"]
+        full_caption = "<a href='https://www.instagram.com/{}'>👤{}</a>".format(
+            user_info["username"],
+            user_info['full_name'])
+        if media_type in [1, 2]:
+            if media_type == 1:
+                image_url = str(story_info["thumbnail_url"])
+                await message.reply_photo(image_url, caption=full_caption)
+                await start.delete()
+            elif media_type == 2:
+                video_url = str(story_info["video_url"])
+                await message.reply_video(video_url, caption=full_caption)
+                await start.delete()
+    except Exception as e:
+        await start.edit_text("Something went wrong!")
+        await message.reply_text(traceback.format_exc())
 
 def insta_register(dp: Dispatcher):
     dp.register_message_handler(download_post, regexp=INSTAGRAM_POST_PATTERN)
+    dp.register_message_handler(download_story, regexp=INSTAGRAM_STORY_PATTERN)
