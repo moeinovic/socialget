@@ -37,12 +37,13 @@ async def download_post(message: types.Message):
                 size = int(Session().head(video_url).headers["Content-Length"])
                 if size <= 20971520:
                     await message.reply_video(video_url, caption=full_caption)
+                    await start.delete()
                 elif size > 20971520 and size <= 52428800:
                     status = "File size is too big please wait to download progress will be start"
-                    status_message = await message.reply(status)
+                    await start.edit_text(status)
                     file = download(video_url)
                     await message.reply_video(file, caption=full_caption)
-                    await status_message.delete()
+                    await start.delete()
                     remove(file)
                     await start.delete()
                 elif size >= 52428800:
