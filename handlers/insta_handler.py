@@ -9,7 +9,7 @@ import traceback
 
 async def download_post(message: types.Message):
     try:
-        start = message.reply_text("Downloading...")
+        start = message.reply("Downloading...")
         insta = Client()
         insta.login_by_sessionid(INSTA_SESSION)
         media_info = insta.media_info(
