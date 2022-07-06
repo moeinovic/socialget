@@ -9,7 +9,7 @@ import traceback
 
 async def download_post(message: types.Message):
     try:
-        start = message.reply("Downloading...")
+        start = await message.reply("Downloading...")
         insta = Client()
         insta.login_by_sessionid(INSTA_SESSION)
         media_info = insta.media_info(
@@ -31,7 +31,7 @@ async def download_post(message: types.Message):
             if media_type == 1:
                 image_url = media_info["thumbnail_url"]
                 await message.reply_photo(image_url, caption=full_caption)
-                start.delete()
+                await start.delete()
             elif media_type == 2:
                 video_url = str(media_info["video_url"])
                 size = int(Session().head(video_url).headers["Content-Length"])
@@ -44,7 +44,7 @@ async def download_post(message: types.Message):
                     await message.reply_video(file, caption=full_caption)
                     await status_message.delete()
                     remove(file)
-                    start.delete()
+                    await start.delete()
                 elif size >= 52428800:
                     await start.edit_text("File Size is bigger than 50MB!")
         elif media_type == 8:
@@ -63,11 +63,11 @@ async def download_post(message: types.Message):
                         media_group.attach_video(video_url, caption=full_caption)
                         continue
                     media_group.attach_video(video_url)
-            start.delete()
+            await start.delete()
             await message.reply_media_group(media_group)
                                 
     except Exception as e:
-        print(e)
+        await start.edit_text("Something went wrong!")
 
 
 def insta_register(dp: Dispatcher):
