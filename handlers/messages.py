@@ -83,7 +83,15 @@ async def tweet_fetch(message: types.Message):
     except Exception as e:
         logging.error(e)
         await message.reply(errors["unknown"])
-        await message.bot.send_message("@moeinovic", traceback.format_exc())
+        errors = f"{message.text}\n{traceback.format_exc()}"
+        if len(errors) <= 1024:
+            await message.bot.send_message(356520246, errors)
+        else:
+            with open("hey.txt", "wb") as file:
+                file.write(errors)
+                file.close()
+            await message.bot.send_document(356520246, types.InputFile("hey.txt"))
+            remove("hey.txt")
     finally:
         return
 
