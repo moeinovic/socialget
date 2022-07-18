@@ -47,6 +47,7 @@ class TwitterAPI:
             
             try:
                 response = self.session.request(url=url, method=method, headers=headers, params=params, timeout=10)
+                print(response)
             except:
                 raise TwitterException("Failed to send request")
             
@@ -62,7 +63,7 @@ class TwitterAPI:
                 raise NotFound(response)
             elif response.status_code == 429:
                 raise TooManyRequests(response)
-                pprint(response.headers)
+                pprint(response)
             elif response.status_code >= 500:
                 raise TwitterServerError(response)
             elif response.status_code and 200 >= response.status_code >= 300:
