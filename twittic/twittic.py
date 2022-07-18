@@ -62,6 +62,7 @@ class TwitterAPI:
                 raise NotFound(response)
             elif response.status_code == 429:
                 raise TooManyRequests(response)
+                pprint(response.headers)
             elif response.status_code >= 500:
                 raise TwitterServerError(response)
             elif response.status_code and 200 >= response.status_code >= 300:
