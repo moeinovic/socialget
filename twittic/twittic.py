@@ -26,8 +26,6 @@ class TwitterAPI:
             "Authorization": "Bearer " + self.access_token,
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
         }
-        self.x_auth_token = self.get_token()
-        self.headers["X-Auth-Token"] = self.x_auth_token
         
         
         self.params = {
@@ -150,6 +148,8 @@ class TwitterAPI:
             url = self.base_url + "statuses/show.json"
             params = self.params
             params["id"] = tweet_id
+            x_auth_token = self.get_token()
+            self.headers["X-Auth-Token"] = x_auth_token
             response = self.request(url, method="GET", params=params, headers=self.headers).json()
             has_media  = True if "extended_entities" in response else False
             if has_media:
