@@ -4,7 +4,7 @@ import traceback
 from aiogram import types, Dispatcher
 from aiogram.utils.exceptions import BadRequest
 from twittic import TwitterAPI
-from twittic.exceptions import NotFound, Forbidden, ContentError
+from twittic.exceptions import NotFound, Forbidden, ContentError, TooManyRequests
 
 from requests import Session
 from wget import download
@@ -80,6 +80,8 @@ async def tweet_fetch(message: types.Message):
         await message.reply(errors["notfound"])
     except Forbidden:
         await message.reply(errors["forbidden"])
+    except TooManyRequests:
+        await message.reply("Too Many Requests \n Please try again in a few minutes.")
     except Exception as e:
         logging.error(e)
         await message.reply(errors["unknown"])
