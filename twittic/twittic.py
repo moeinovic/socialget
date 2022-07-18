@@ -74,6 +74,7 @@ class TwitterAPI:
         url = self.base_url + "guest/activate.json"
         try:
             response = self.request(url, method="POST", headers=self.headers).json()
+            print(response.headers)
         except Exception as e:
             raise TwitterException(e)
 
