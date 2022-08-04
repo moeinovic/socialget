@@ -81,7 +81,7 @@ async def tweet_fetch(message: types.Message):
     except Forbidden:
         await message.reply(errors["forbidden"])
     except TooManyRequests:
-        await message.reply("Too Many Requests \n Please try again in a few minutes.")
+        await message.reply(errors["toomany"])
     except Exception as e:
         logging.error(e)
         await message.reply(errors["unknown"])
