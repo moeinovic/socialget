@@ -74,7 +74,6 @@ class TwitterAPI:
         url = self.base_url + "guest/activate.json"
         try:
             send = self.request(url, method="POST", headers=self.headers)
-            print(send.__dict__)
             response = send.json()
         except Exception as e:
             raise TwitterException(e)
@@ -153,7 +152,9 @@ class TwitterAPI:
             params["id"] = tweet_id
             x_auth_token = self.get_token()
             self.headers["X-Auth-Token"] = x_auth_token
-            response = self.request(url, method="GET", params=params, headers=self.headers).json()
+            response = self.request(url, method="GET", params=params, headers=self.headers)
+            pprint(response.__dict__)
+            response = response.json()
             has_media  = True if "extended_entities" in response else False
             if has_media:
                 media_count = len(response["extended_entities"]["media"])
