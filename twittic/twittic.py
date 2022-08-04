@@ -47,7 +47,6 @@ class TwitterAPI:
             
             try:
                 response = self.session.request(url=url, method=method, headers=headers, params=params, timeout=10)
-                print(response)
             except:
                 raise TwitterException("Failed to send request")
             
@@ -74,9 +73,8 @@ class TwitterAPI:
     def get_token(self):
         url = self.base_url + "guest/activate.json"
         try:
-            response = self.request(url, method="POST", headers=self.headers)
-            print(response.__dict__)
-            response = response.json()
+            send = self.request(url, method="POST", headers=self.headers)
+            response = send.json()
         except Exception as e:
             raise TwitterException(e)
 
