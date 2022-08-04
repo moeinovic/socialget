@@ -74,8 +74,9 @@ class TwitterAPI:
     def get_token(self):
         url = self.base_url + "guest/activate.json"
         try:
-            response = self.request(url, method="POST", headers=self.headers).json()
+            response = self.request(url, method="POST", headers=self.headers)
             print(response.__dict__)
+            response = response.json()
         except Exception as e:
             raise TwitterException(e)
 
