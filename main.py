@@ -9,7 +9,7 @@ Cli = Bot(token=API_TOKEN, parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(Cli)
 
 insta_register(dp)
-twetter_register_callbacks(dp)
-twetter_register_commands(dp)
+#twetter_register_callbacks(dp)
+#twetter_register_commands(dp)
 
 executor.start_polling(dp, skip_updates=True)
