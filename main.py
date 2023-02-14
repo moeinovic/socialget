@@ -4,7 +4,7 @@ from handlers.messages import twetter_register_commands
 from handlers.insta_handler import insta_register
 from os import environ
 
-API_TOKEN = environ["API_TOKEN"]
+API_TOKEN = "5930397687:AAE7Mijae2w2JiLP-8o2pVjf_iH2zEYZDc4"
 Cli = Bot(token=API_TOKEN, parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(Cli)
 
